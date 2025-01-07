@@ -10,7 +10,7 @@ function ForgotPassword() {
           No Worries<span className="text-purple-500">.!!</span>
         </h1>
         <button className="px-6 py-3 mt-4 text-sm text-black transition bg-white rounded-full shadow-md md:text-base hover:bg-gray-200">
-          Take me back
+          Take me back.!
         </button>
       </div>
 
