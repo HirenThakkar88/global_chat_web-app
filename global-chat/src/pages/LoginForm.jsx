@@ -1,37 +1,8 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        console.log("Login successful!");
-        navigate("/ChatEmptyState");
-      } else {
-        setError(data.message || "Login failed.");
-      }
-    } catch (error) {
-      console.error("Error during login:", error);
-      setError("Server error. Please try again later.");
-    }
-  };
-
   return (
     <div className="flex flex-col-reverse items-center justify-between min-h-screen p-4 bg-black font-noto-sans md:flex-row md:p-8">
       {/* Left Section */}
@@ -56,22 +27,18 @@ function LoginForm() {
           Glad you are back.!
         </p>
 
-        {error && <p className="mb-4 text-sm text-red-500">{error}</p>}
+        {/* {error && <p className="mb-4 text-sm text-red-500">{error}</p>} */}
 
         {/* Form */}
-        <form className="space-y-4" onSubmit={handleLogin}>
+        <form className="space-y-4">
           <input
             type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            placeholder="email"
             className="w-full px-4 py-3 text-sm text-white bg-transparent border border-gray-600 rounded-md outline-none md:text-base focus:ring-2 focus:ring-purple-500"
           />
           <input
             type="password"
             placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
             className="w-full px-4 py-3 text-sm text-white bg-transparent border border-gray-600 rounded-md outline-none md:text-base focus:ring-2 focus:ring-purple-500"
           />
           <div className="flex items-center justify-between">

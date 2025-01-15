@@ -1,10 +1,10 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LoginForm from "./components/LoginForm";
-import SignupForm from "./components/SignupForm";
-import ForgotPassword from "./components/ForgotPassword";
-import ChatEmptyState from "./components/ChatEmptyState";
+import LoginForm from "./pages/LoginForm";
+import SignupForm from "./pages/SignupForm";
+import ForgotPassword from "./pages/ForgotPassword";
+import ChatEmptyState from "./pages/ChatEmptyState";
 
 
 const App = () => {
