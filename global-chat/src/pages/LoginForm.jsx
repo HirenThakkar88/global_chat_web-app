@@ -1,8 +1,21 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState } from "react";
-//import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useAuthStore } from "../store/useAuthStore";
+import { Link } from "react-router-dom";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 
-function LoginForm() {
+const LoginForm = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const { login, isLoggingIn } = useAuthStore();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    login(formData);
+  };
+
   return (
     <div className="flex flex-col-reverse items-center justify-between min-h-screen p-4 bg-black font-noto-sans md:flex-row md:p-8">
       {/* Left Section */}
@@ -20,40 +33,55 @@ function LoginForm() {
         {/* Gradient Circle */}
         <div className="absolute w-32 h-32 md:w-40 md:h-40 bg-gradient-to-r from-purple-600 to-blue-800 blur-3xl top-[-30px] right-[-40px]"></div>
 
-        <h2 className="mb-2 text-xl font-bold text-white sm:text-2xl md:text-3xl">
-          Login
-        </h2>
-        <p className="mb-6 text-sm text-gray-400 sm:text-base">
-          Glad you are back.!
-        </p>
-
-        {/* {error && <p className="mb-4 text-sm text-red-500">{error}</p>} */}
+        <h2 className="mb-2 text-xl font-bold text-white sm:text-2xl md:text-3xl">Login</h2>
+        <p className="mb-6 text-sm text-gray-400 sm:text-base">Glad you are back.!</p>
 
         {/* Form */}
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <input
-            type="text"
-            placeholder="email"
+            type="email"
+            placeholder="Email"
             className="w-full px-4 py-3 text-sm text-white bg-transparent border border-gray-600 rounded-md outline-none md:text-base focus:ring-2 focus:ring-purple-500"
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
           />
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full px-4 py-3 text-sm text-white bg-transparent border border-gray-600 rounded-md outline-none md:text-base focus:ring-2 focus:ring-purple-500"
-          />
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              className="w-full px-4 py-3 text-sm text-white bg-transparent border border-gray-600 rounded-md outline-none md:text-base focus:ring-2 focus:ring-purple-500"
+              value={formData.password}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            />
+            <button
+              type="button"
+              className="absolute inset-y-0 flex items-center right-3"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <EyeOff className="w-5 h-5 text-gray-400" /> : <Eye className="w-5 h-5 text-gray-400" />}
+            </button>
+          </div>
           <div className="flex items-center justify-between">
             <label className="text-sm text-gray-400">
               <input type="checkbox" className="mr-2" /> Remember me
             </label>
-            <a href="/ForgotPassword" className="text-sm text-blue-500 underline">
+            <Link to="/ForgotPassword" className="text-sm text-blue-500 underline">
               Forgot Password?
-            </a>
+            </Link>
           </div>
           <button
             type="submit"
             className="w-full py-3 text-sm text-white transition rounded-md shadow-lg md:text-base bg-gradient-to-r from-purple-500 to-blue-600 hover:opacity-90"
+            disabled={isLoggingIn}
           >
-            Login
+            {isLoggingIn ? (
+              <>
+                <Loader2 className="inline-block w-5 h-5 mr-2 animate-spin" />
+                Loading...
+              </>
+            ) : (
+              "Login"
+            )}
           </button>
         </form>
 
@@ -67,54 +95,26 @@ function LoginForm() {
         {/* Social Buttons */}
         <div className="flex justify-center gap-3">
           <button className="flex items-center gap-2 px-4 py-2 text-sm transition bg-gray-800 rounded shadow md:text-base hover:bg-gray-700">
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png"
-              alt="Google Logo"
-              className="w-5 h-5"
-            />
+            <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" alt="Google Logo" className="w-5 h-5" />
             <span className="text-white">Google</span>
           </button>
           <button className="flex items-center gap-2 px-4 py-2 text-sm transition bg-gray-800 rounded shadow md:text-base hover:bg-gray-700">
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/733/733547.png"
-              alt="Facebook Logo"
-              className="w-5 h-5"
-            />
+            <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook Logo" className="w-5 h-5" />
             <span className="text-white">Facebook</span>
           </button>
           <button className="flex items-center gap-2 px-4 py-2 text-sm transition bg-gray-800 rounded shadow md:text-base hover:bg-gray-700">
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/733/733553.png"
-              alt="GitHub Logo"
-              className="w-5 h-5"
-            />
+            <img src="https://cdn-icons-png.flaticon.com/512/733/733553.png" alt="GitHub Logo" className="w-5 h-5" />
             <span className="text-white">GitHub</span>
           </button>
         </div>
 
         {/* Signup Link */}
         <p className="mt-4 text-sm text-center text-gray-400 sm:text-base">
-          Do not have an account?{" "}
-          <a href="/SignupForm" className="text-blue-500 underline">
-            Signup
-          </a>
+          Don't have an account? <Link to="/SignupForm" className="text-blue-500 underline">Signup</Link>
         </p>
-
-        {/* Footer Links */}
-        <div className="flex justify-between mt-6 text-xs text-gray-400 sm:text-sm">
-          <a href="#" className="transition hover:text-white">
-            Terms & Conditions
-          </a>
-          <a href="#" className="transition hover:text-white">
-            Support
-          </a>
-          <a href="#" className="transition hover:text-white">
-            Customer Care
-          </a>
-        </div>
       </div>
     </div>
   );
-}
+};
 
 export default LoginForm;

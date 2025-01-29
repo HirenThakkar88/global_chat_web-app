@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import cloudinary from "../lib/cloudinary.js";
 
 
-//For Signip
+//For Signup
 export const signup = async (req, res) => {
   const { fullName, email, password } = req.body;
   try {
